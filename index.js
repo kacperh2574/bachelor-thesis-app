@@ -1,4 +1,3 @@
-const { json } = require('express');
 const express = require('express');
 const fs = require('fs');
 
@@ -7,16 +6,7 @@ const port = 5000;
 
 app.use(express.json());
 
-// app.get('/', (req, res) => {
-//     res
-//     .status(200)
-//     .json({message: 'Homepage', app: 'Escape room booking'});
-// });
-
-// app.post('/', (req, res) => {
-//     res.send('POST request');
-// });
-
+// tymczasowo lokalny plik JSON zamiast bazy danych aby zacząć tworzyć API
 const rooms = JSON.parse(
     fs.readFileSync(`${__dirname}/dev-data/rooms.json`)
 );
