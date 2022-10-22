@@ -9,6 +9,10 @@ app.get('/', (req, res) => {
     .json({message: 'Homepage', app: 'Escape room booking'});
 });
 
+app.get('/api/v1/rooms', (req, res) => {
+    
+})
+
 app.post('/', (req, res) => {
     res.send('POST request');
 });
