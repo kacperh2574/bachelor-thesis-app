@@ -7,7 +7,7 @@ const rooms = JSON.parse(
 
 // check if a room with requested ID even exists
 exports.checkId = (req, res, next, val) => {
-    if (req.params.id >= rooms.length) {
+    if (val >= rooms.length) {
         return res.status(404).json({
             status: "failure",
             message: "Invalid ID"
