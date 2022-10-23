@@ -1,20 +1,28 @@
+const exp = require('constants');
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
+
+// middleware
+app.use(morgan('dev')); // request logger
 app.use(express.json());
+app.use((req, res, next) => {
+    req.requestedAt = new Date().toISOString();
+    next();
+});
 
-const port = 5000;
-
-
-// tymczasowo lokalny plik JSON zamiast bazy danych aby zacząć tworzyć API
+// a local JSON file instead of a database for simple API developing and testing
 const rooms = JSON.parse(
     fs.readFileSync(`${__dirname}/dev-data/rooms.json`)
 );
 
+// route handlers
 const getAllRooms = (req, res) => {
     res.status(200).json({
         status: 'success',
+        requestedAt: req.requestedAt,
         results: rooms.length,
         data: {
             rooms
@@ -41,7 +49,7 @@ const getRoom = (req, res) => {
     });
 };
 
-const postRoom = (req, res) => {
+const createRoom = (req, res) => {
     const newId = rooms[rooms.length - 1].id + 1;
     const newRoom = Object.assign({ id: newId }, req.body);
 
@@ -60,7 +68,7 @@ const postRoom = (req, res) => {
     );
 };
 
-const patchRoom = (req, res) => {
+const updateRoom = (req, res) => {
     if (req.params.id >= rooms.length) {
         return res.status(404).json({
             status: "fail",
@@ -90,17 +98,72 @@ const deleteRoom = (req, res) => {
     });
 };
 
-app
-.route('/api/v1/rooms')
-.get(getAllRooms)
-.post(postRoom);
+const getAllUsers = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'Route undefined'
+    })
+};
 
-app
-.route('/api/v1/rooms/:id')
+const getUser = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'Route undefined'
+    })
+};
+
+const createUser = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'Route undefined'
+    })
+};
+
+const updateUser = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'Route undefined'
+    })
+};
+
+const deleteUser = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'Route undefined'
+    })
+};
+
+// routes
+const roomRouter = express.Router();
+const userRouter = express.Router();
+
+roomRouter
+.route('/')
+.get(getAllRooms)
+.post(createRoom);
+
+roomRouter
+.route('/:id')
 .get(getRoom)
-.patch(patchRoom)
+.patch(updateRoom)
 .delete(deleteRoom);
 
+userRouter
+.route('/')
+.get(getAllUsers)
+.post(createUser);
+
+userRouter
+.route('/:id')
+.get(getUser)
+.patch(updateUser)
+.delete(deleteUser);
+
+app.use('/api/v1/rooms', roomRouter);
+app.use('/api/v1/users', userRouter);
+
+// start server
+const port = 5000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}...`);
 });
