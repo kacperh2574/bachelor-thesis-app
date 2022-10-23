@@ -11,8 +11,8 @@ app.use(morgan('dev')); // request logger (method, status code, elapsed time)
 app.use(express.json()); // parses JSON and returns JS object
 
 // routes
-app.use('/api/v1/rooms', roomRouter);
-app.use('/api/v1/users', userRouter);
+app.use('/api/rooms', roomRouter);
+app.use('/api/users', userRouter);
 
 // start server
 const port = 5000;
