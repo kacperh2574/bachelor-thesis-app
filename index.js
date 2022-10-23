@@ -21,6 +21,25 @@ app.get('/api/v1/rooms', (req, res) => {
     });
 });
 
+app.get('/api/v1/rooms/:id', (req, res) => {
+    const id = req.params.id;
+    const room = rooms.find(el => el.id == id);
+
+    if (!room) {
+        return res.status(404).json({
+            status: "fail",
+            message: "Invalid ID"
+        });
+    }
+    
+    res.status(200).json({
+        status: 'success',
+        data: {
+            room
+        }
+    });
+});
+
 app.post('/api/v1/rooms', (req, res) => {
     const newId = rooms[rooms.length - 1].id + 1;
     const newRoom = Object.assign({ id: newId }, req.body);
