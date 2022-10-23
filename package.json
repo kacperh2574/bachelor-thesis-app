@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.1.0",
-  "description": "Refactored basic API (rooms and users)",
+  "version": "0.1.1",
+  "description": "Implemented checkId as a middleware",
   "main": "index.js",
   "scripts": {
     "test": "nodemon index.js"
