@@ -1,51 +1,16 @@
 const express = require('express');
-
-const getAllUsers = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route undefined'
-    })
-};
-
-const getUser = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route undefined'
-    })
-};
-
-const createUser = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route undefined'
-    })
-};
-
-const updateUser = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route undefined'
-    })
-};
-
-const deleteUser = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route undefined'
-    })
-};
-
+const userController = require('../controllers/userController');
 const router = express.Router();
 
 router
 .route('/')
-.get(getAllUsers)
-.post(createUser);
+.get(userController.getAllUsers)
+.post(userController.createUser);
 
 router
 .route('/:id')
-.get(getUser)
-.patch(updateUser)
-.delete(deleteUser);
+.get(userController.getUser)
+.patch(userController.updateUser)
+.delete(userController.deleteUser);
 
 module.exports = router;
