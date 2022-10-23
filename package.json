@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.0.1",
-  "description": "Initial",
+  "version": "0.0.2",
+  "description": "Partly refactored pseudo-API",
   "main": "index.js",
   "scripts": {
     "test": "nodemon index.js"
