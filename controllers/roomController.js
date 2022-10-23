@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-// JSON file used instead of a database to develop basic API
+// JSON file used instead of a database to develop and test basic API
 const rooms = JSON.parse(
     fs.readFileSync(`${__dirname}/../dev-data/rooms.json`)
 );
