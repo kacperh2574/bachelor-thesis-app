@@ -7,7 +7,7 @@ router.param('id', roomController.checkId);
 router
 .route('/')
 .get(roomController.getAllRooms)
-.post(roomController.createRoom);
+.post(roomController.checkBody, roomController.createRoom);
 
 router
 .route('/:id')
