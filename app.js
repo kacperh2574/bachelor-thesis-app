@@ -14,8 +14,4 @@ app.use(express.json()); // parses JSON and returns JS object
 app.use('/api/rooms', roomRouter);
 app.use('/api/users', userRouter);
 
-// start server
-const port = 5000;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}...`);
-});
+module.exports = app;

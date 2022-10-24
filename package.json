@@ -1,10 +1,10 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.1.2",
-  "description": "Implemented checkBody middleware",
-  "main": "index.js",
+  "version": "0.2.0",
+  "description": "Dividing express and server functionality into separated files (app.js, server.js), setting env. variables",
+  "main": "app.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/kacperh2574/praca-dyplomowa#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "morgan": "^1.10.0"
   },
