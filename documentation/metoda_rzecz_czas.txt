@@ -1,0 +1,3 @@
+Użytkownik wchodzi na wyrenderowaną stronę aplikacji. Zakłada konto podając nazwę, email, hasło (opcjonalnie zdjęcie oraz kartę płatniczą). Potwierdza utworzenie nowego konta przy użyciu linku z wiadomości email. Loguje się.
+Użytkownik przegląda escape roomy na stronie głównej. Wyświetla escape room. Zapoznaje się ze szczegółami escape roomu. Dokonuje rezerwacji. Opłaca rezerwację. Po upłynięciu czasu końca wizyty może wystawić recenzję wraz z oceną.
+Użytkownik wchodzi na stronę swojego profilu. Może zmienić nazwę, email i/lub hasło. Może przeglądać swoje rezerwacje, płatności i recenzje.
