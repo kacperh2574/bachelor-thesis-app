@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { isStringObject } = require('util/types');
 
 // JSON file used instead of a database to develop and test basic API
 const rooms = JSON.parse(
