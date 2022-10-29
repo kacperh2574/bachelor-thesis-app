@@ -1,16 +1,5 @@
 const Room = require('.././models/roomModel');
 
-// check if a posted room has a name and price
-exports.checkBody = (req, res, next) => {
-    if (!req.body.name || !req.body.price) {
-        return res.status(400).json({
-            status: "failure",
-            message: "Missing name or price"
-        });
-    };
-    next();
-};
-
 exports.getAllRooms = (req, res) => {
     res.status(200).json({
         status: 'success',
@@ -32,13 +21,22 @@ exports.getRoom = (req, res) => {
     // });
 };
 
-exports.createRoom = (req, res) => {
-    res.status(201).json({
-        status: 'success',
-        // data: {
-        //     newRoom
-        // }
-    });
+exports.createRoom = async (req, res) => {
+    try {
+        const newRoom = await Room.create(req.body);
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                room: newRoom
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: "failure",
+            message: "Invalid data sent"
+        });
+    }
 };
 
 exports.updateRoom = (req, res) => {

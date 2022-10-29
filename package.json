@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.3.1",
-  "description": "Connected to the MongoDB Atlas Database",
+  "version": "0.3.2",
+  "description": "Create room handler implemented",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js"
@@ -27,5 +27,8 @@
     "eslint-config-prettier": "^8.5.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1"
+  },
+  "engines": {
+    "node": ">=16.18.0"
   }
 }

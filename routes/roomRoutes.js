@@ -7,7 +7,7 @@ const router = express.Router();
 router
 .route('/')
 .get(roomController.getAllRooms)
-.post(roomController.checkBody, roomController.createRoom);
+.post(roomController.createRoom);
 
 router
 .route('/:id')
