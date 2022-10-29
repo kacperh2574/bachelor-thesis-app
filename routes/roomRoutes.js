@@ -2,7 +2,7 @@ const express = require('express');
 const roomController = require('../controllers/roomController');
 const router = express.Router();
 
-router.param('id', roomController.checkId);
+// router.param('id', roomController.checkId);
 
 router
 .route('/')
