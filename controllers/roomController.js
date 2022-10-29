@@ -1,24 +1,40 @@
 const Room = require('.././models/roomModel');
 
-exports.getAllRooms = (req, res) => {
-    res.status(200).json({
+exports.getAllRooms = async (req, res) => {
+    try {
+        const rooms = await Room.find();
+
+        res.status(200).json({
         status: 'success',
-        // results: `Found ${rooms.length} escape rooms`,
-        // data: {
-        //     rooms
-        // }
+        results: rooms.length,
+        data: {
+            rooms
+        }
     });
+    } catch(err) {
+        res.status(404).json({
+            status: "failure",
+            message: "Cannot get all rooms"
+        });
+    }
 };
 
-exports.getRoom = (req, res) => {
-    const id = Number(req.params.id);
-    // const room = rooms.find(el => el.id === id);
-    // res.status(200).json({
-    //     status: 'success',
-    //     data: {
-    //         room
-    //     }
-    // });
+exports.getRoom = async (req, res) => {
+    try {
+        const room = await Room.findById(req.params.id);
+
+        res.status(200).json({
+                status: 'success',
+                data: {
+                    room
+                }
+        });
+    } catch(err) {
+        res.status(404).json({
+            status: "failure",
+            message: "Cannot get a room"
+        });
+    }
 };
 
 exports.createRoom = async (req, res) => {
@@ -34,23 +50,44 @@ exports.createRoom = async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: "failure",
-            message: "Invalid data sent"
+            message: "Cannot create a room"
         });
     }
 };
 
-exports.updateRoom = (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        data: {
-            room: '(updated room here)'
-        }
-    });
+exports.updateRoom = async (req, res) => {
+    try {
+        const room = await Room.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                room
+            }
+        });
+    } catch(err) {
+        res.status(400).json({
+            status: 'failure',
+            message: 'Cannot update a room'
+        });
+    }
 };
 
-exports.deleteRoom = (req, res) => {
-    res.status(204).json({
-        status: 'success',
-        data: null
-    });
+exports.deleteRoom = async (req, res) => {
+    try {
+        await Room.findByIdAndDelete(req.params.id);
+
+        res.status(204).json({
+            status: 'success',
+            data: null
+        });
+    } catch(err) {
+        res.status(400).json({
+            status: "failure",
+            message: "Cannot delete a room"
+        });
+    }
 };

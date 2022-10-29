@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.3.2",
-  "description": "Create room handler implemented",
+  "version": "0.3.3",
+  "description": "Rooms controllers updated to work with DB",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js"

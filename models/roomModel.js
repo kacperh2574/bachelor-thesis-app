@@ -12,7 +12,7 @@ const roomSchema = new mongoose.Schema({
     },
     price: {
       type: Number,
-      required: [true, 'A room must hava a price']
+      required: [true, 'A room must have a price']
     }
   });
   const Room = mongoose.model('Room', roomSchema);
