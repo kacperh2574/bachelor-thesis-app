@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.3.3",
-  "description": "Rooms controllers updated to work with DB",
+  "version": "0.3.4",
+  "description": "Data imported from JSON file to DB",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js"
