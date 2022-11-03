@@ -2,7 +2,11 @@ const Room = require('.././models/roomModel');
 
 exports.getAllRooms = async (req, res) => {
     try {
-        const rooms = await Room.find();
+        const queryObj = {...req.query};
+        const excludedFields = ['page', 'sort', 'limit', 'fields'];
+        excludedFields.forEach(el => delete queryObj[el]);
+
+        const rooms = await Room.find(queryObj);
 
         res.status(200).json({
         status: 'success',
