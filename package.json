@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.3.5",
-  "description": "Added some features to API",
+  "version": "0.3.6",
+  "description": "'top-rated' and 'cheapest' endpoints added to API",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js"

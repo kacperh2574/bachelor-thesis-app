@@ -1,12 +1,26 @@
 const Room = require('.././models/roomModel');
 
+exports.aliasTopRated = (req, res, next) => {
+    req.query.limit = '5';
+    req.query.sort = '-ratingsAvg,price';
+    next();
+};
+
+exports.aliasCheapest = (req, res, next) => {
+    req.query.limit = '5';
+    req.query.sort = 'price,-ratingsAvg';
+    next();
+};
+
 exports.getAllRooms = async (req, res) => {
     try {
         const queryObj = { ...req.query }; // deep copy of req.query object
-
         // 1) filtering
         let queryStr = JSON.stringify(queryObj);
-        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`); // basing on mongoose query selectors
+        queryStr = queryStr.replace(
+            /\b(gte|gt|lte|lt)\b/g, // basing on mongoose query selectors
+            match => `$${match}`
+        );
 
         // returns Promise
         let query = Room.find(JSON.parse(queryStr));
@@ -16,22 +30,22 @@ exports.getAllRooms = async (req, res) => {
             const sortBy = req.query.sort.split(',').join(' ');
             query = query.sort(sortBy);
         } else {
-            query = query.sort('-createdAt');
+            query = query.sort('-createdAt'); // by date ascending
         }
 
         // 3) field limiting
         if (req.query.fields) {
             const fields = req.query.fields.split(',').join(' ');
-            query = query.select(fields);
+            query = query.select(fields); // query projection
         } else {
-            query = query.select('-__v');
+            query = query.select('-__v'); // excluding __v field
         }
 
         // 4) pagination
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 2;
         const skip = (page - 1) * limit;
-        query = query.skip(skip).limit(limit);
+        query = query.skip(skip).limit(limit); // skip specified amount of rooms, limit results to specified amount
 
         // returns resolve (after chaining all required methods)
         const rooms = await query;
