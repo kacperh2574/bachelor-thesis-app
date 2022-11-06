@@ -1,76 +1,56 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
 
 const roomSchema = new mongoose.Schema({
     name: {
-        type: String,
-        required: [true, 'Name required'],
-        unique: true,
-        trim: true,
-        minlength: [10, 'Minimum 10 characters'],
-        maxlength: [50, 'Maximum 50 characters'],
-    },
-    slug: {
-        type: String,
-        unique: true,
+      type: String,
+      required: [true, 'A room must have a name'],
+      unique: true,
+      trim: true
     },
     duration: {
-        type: Number,
-        required: [true, 'Duration required'],
+      type: Number,
+      required: [true, 'A room must have a duration']
     },
     maxGroupSize: {
-        type: Number,
-        required: [true, 'Group size required'],
+      type: Number,
+      required: [true, 'A room must have a group size']
     },
     difficulty: {
-        type: String,
-        required: [true, 'Difficulty required'],
-        enum: {
-            values: ['easy', 'medium', 'difficult'],
-            message: 'Possible values: easy, medium, difficult',
-        },
+      type: String,
+      required: [true, 'A room must have a difficulty']
     },
     ratingsAvg: {
-        type: Number,
-        default: 4.5,
-        min: [1.0, 'Possible value between 1.0 and 5.0'],
-        max: [5.0, 'Possible value between 1.0 and 5.0'],
+      type: Number,
+      default: 4.5
     },
     ratingsQuantity: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0
     },
     price: {
-        type: Number,
-        required: [true, 'Price required'],
+      type: Number,
+      required: [true, 'A room must have a price']
     },
     summary: {
-        type: String,
-        trim: true,
-        required: [true, 'Summary required'],
+      type: String,
+      trim: true,
+      required: [true, 'A room must have a summary']
     },
     description: {
-        type: String,
-        trim: true,
+      type: String,
+      trim: true,
+      required: [true, 'A room must have a description']
     },
     imgCover: {
-        type: String,
-        required: [true, 'Cover image required'],
+      type: String,
+      required: [true, 'A room must have a cover image']
     },
     images: [String],
     createdAt: {
-        type: Date,
-        default: Date.now(),
-    },
-});
+      type: Date,
+      default: Date.now()
+    }
+  });
+  const Room = mongoose.model('Room', roomSchema);
 
-// not arrow function to get access to "this" keyword
-// slug will be implemented later
-roomSchema.pre('save', function (next) {
-    this.slug = slugify(this.name, { lower: true });
-    next();
-});
-
-const Room = mongoose.model('Room', roomSchema);
-
-module.exports = Room;
+  module.exports = Room;

@@ -14,13 +14,4 @@ app.use(express.json()); // parses JSON and returns JS object
 app.use('/api/rooms', roomRouter);
 app.use('/api/users', userRouter);
 
-// handle not existing routes
-app.all('*', (req, res, next) => {
-    res.status(404).json({
-        status: 'failure',
-        message: `Cannot find ${req.originalUrl}`,
-    });
-    next();
-});
-
 module.exports = app;

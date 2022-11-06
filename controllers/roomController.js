@@ -43,7 +43,7 @@ exports.getAllRooms = async (req, res) => {
 
         // 4) pagination
         const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 3;
+        const limit = Number(req.query.limit) || 2;
         const skip = (page - 1) * limit;
         query = query.skip(skip).limit(limit); // skip specified amount of rooms, limit results to specified amount
 
@@ -60,14 +60,14 @@ exports.getAllRooms = async (req, res) => {
     } catch (err) {
         res.status(404).json({
             status: 'failure',
-            message: err,
+            message: 'Cannot get all rooms',
         });
     }
 };
 
 exports.getRoom = async (req, res) => {
     try {
-        const room = await Room.find({ slug: req.params.slug });
+        const room = await Room.findById(req.params.id);
 
         res.status(200).json({
             status: 'success',
@@ -78,7 +78,7 @@ exports.getRoom = async (req, res) => {
     } catch (err) {
         res.status(404).json({
             status: 'failure',
-            message: err,
+            message: 'Cannot get a room',
         });
     }
 };
@@ -96,21 +96,17 @@ exports.createRoom = async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: 'failure',
-            message: err,
+            message: 'Cannot create a room',
         });
     }
 };
 
 exports.updateRoom = async (req, res) => {
     try {
-        const room = await Room.findOneAndUpdate(
-            { slug: req.params.slug },
-            req.body,
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
+        const room = await Room.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+        });
 
         res.status(200).json({
             status: 'success',
@@ -121,14 +117,14 @@ exports.updateRoom = async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: 'failure',
-            message: err,
+            message: 'Cannot update a room',
         });
     }
 };
 
 exports.deleteRoom = async (req, res) => {
     try {
-        await Room.findOneAndDelete({ slug: req.params.slug });
+        await Room.findByIdAndDelete(req.params.id);
 
         res.status(204).json({
             status: 'success',
@@ -137,7 +133,7 @@ exports.deleteRoom = async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: 'failure',
-            message: err,
+            message: 'Cannot delete a room',
         });
     }
 };
