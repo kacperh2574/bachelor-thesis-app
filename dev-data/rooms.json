@@ -20,7 +20,7 @@
         "name": "The ancient legacy",
         "duration": 45,
         "maxGroupSize": 4,
-        "difficulty": "low",
+        "difficulty": "easy",
         "ratingsAvg": 4.2,
         "ratingsQuantity": 11,
         "price": 150,
@@ -37,7 +37,7 @@
         "name": "Kidnapped by aliens",
         "duration": 120,
         "maxGroupSize": 1,
-        "difficulty": "very difficult",
+        "difficulty": "difficult",
         "ratingsAvg": 5,
         "ratingsQuantity": 1,
         "price": 420,
@@ -48,6 +48,40 @@
             "room-3-1.jpg",
             "room-3-2.jpg",
             "room-3-3.jpg"
+        ]
+    },
+    {
+        "name": "The abandoned island",
+        "duration": 100,
+        "maxGroupSize": 2,
+        "difficulty": "difficult",
+        "ratingsAvg": 4.7,
+        "ratingsQuantity": 18,
+        "price": 180,
+        "summary": "Vestibulum et, posuere sit amet nisi.",
+        "description": "Sed eu viverra metus. Nulla rhoncus dapibus commodo. Fusce augue velit, dapibus et enim quis, euismod faucibus est. Sed eu viverra metus. Nulla rhoncus dapibus commodo. Ut sagittis leo eu est imperdiet pharetra.",
+        "imgCover": "room-4-cover.jpg",
+        "images": [
+            "room-4-1.jpg",
+            "room-4-2.jpg",
+            "room-4-3.jpg"
+        ]
+    },
+    {
+        "name": "In the chase for gold",
+        "duration": 60,
+        "maxGroupSize": 3,
+        "difficulty": "medium",
+        "ratingsAvg": 4.1,
+        "ratingsQuantity": 29,
+        "price": 100,
+        "summary": "Fusce augue velit, dapibus et enim quis",
+        "description": "Leo eu est, nulla rhoncus dapibus commodo. Euismod faucibus est sed eu viverra metus. Nulla rhoncus dapibus commodo. Ut sagittis imperdiet pharetra.",
+        "imgCover": "room-5-cover.jpg",
+        "images": [
+            "room-5-1.jpg",
+            "room-5-2.jpg",
+            "room-5-3.jpg"
         ]
     }
 ]

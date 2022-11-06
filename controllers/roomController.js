@@ -43,7 +43,7 @@ exports.getAllRooms = async (req, res) => {
 
         // 4) pagination
         const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 3;
+        const limit = Number(req.query.limit) || 5;
         const skip = (page - 1) * limit;
         query = query.skip(skip).limit(limit); // skip specified amount of rooms, limit results to specified amount
 
