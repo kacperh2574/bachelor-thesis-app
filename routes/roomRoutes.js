@@ -18,7 +18,7 @@ router
     .post(roomController.createRoom);
 
 router
-    .route('/:id')
+    .route('/:slug')
     .get(roomController.getRoom)
     .patch(roomController.updateRoom)
     .delete(roomController.deleteRoom);
