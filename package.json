@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.3.7",
-  "description": "Requesting by slug, handling not existing routes",
+  "version": "0.4.0",
+  "description": "User model, creation and sign up implemented",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",
@@ -22,12 +22,12 @@
     "express": "^4.18.2",
     "mongoose": "^6.7.0",
     "morgan": "^1.10.0",
-    "slugify": "^1.6.5"
+    "slugify": "^1.6.5",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
-    "ndb": "^1.1.5",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1"
   },
