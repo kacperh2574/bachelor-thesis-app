@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.4.0",
-  "description": "User model, creation and sign up implemented",
+  "version": "0.4.1",
+  "description": "Error handling & GET parametr handling",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",
@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/kacperh2574/praca-dyplomowa#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.0",
     "morgan": "^1.10.0",
     "slugify": "^1.6.5",

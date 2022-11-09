@@ -4,6 +4,9 @@ const morgan = require('morgan');
 const roomRouter = require('./routes/roomRoutes');
 const userRouter = require('./routes/userRoutes');
 
+const AppError = require('./utilities/appError');
+const errorHandler = require('./controllers/errorController');
+
 const app = express();
 
 // middleware
@@ -16,11 +19,10 @@ app.use('/api/users', userRouter);
 
 // handle not existing routes
 app.all('*', (req, res, next) => {
-    res.status(404).json({
-        status: 'failure',
-        message: `Cannot find ${req.originalUrl}`,
-    });
-    next();
+    next(new AppError(`Path ${req.originalUrl} not found`, 404));
 });
+
+// global error handling middleware
+app.use(errorHandler);
 
 module.exports = app;

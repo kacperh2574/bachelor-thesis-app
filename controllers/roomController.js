@@ -1,4 +1,5 @@
 const Room = require('.././models/roomModel');
+const RoomReqSpec = require('../utilities/roomReqSpec');
 
 exports.aliasTopRated = (req, res, next) => {
     req.query.limit = '5';
@@ -14,42 +15,16 @@ exports.aliasCheapest = (req, res, next) => {
 
 exports.getAllRooms = async (req, res) => {
     try {
-        const queryObj = { ...req.query }; // deep copy of req.query object
-        // 1) filtering
-        let queryStr = JSON.stringify(queryObj);
-        queryStr = queryStr.replace(
-            /\b(gte|gt|lte|lt)\b/g, // basing on mongoose query selectors
-            match => `$${match}`
-        );
-
-        // returns Promise
-        let query = Room.find(JSON.parse(queryStr));
-
-        // 2) sorting
-        if (req.query.sort) {
-            const sortBy = req.query.sort.split(',').join(' ');
-            query = query.sort(sortBy);
-        } else {
-            query = query.sort('-createdAt'); // by date ascending
-        }
-
-        // 3) field limiting
-        if (req.query.fields) {
-            const fields = req.query.fields.split(',').join(' ');
-            query = query.select(fields); // query projection
-        } else {
-            query = query.select('-__v'); // excluding __v field
-        }
-
-        // 4) pagination
-        const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 5;
-        const skip = (page - 1) * limit;
-        query = query.skip(skip).limit(limit); // skip specified amount of rooms, limit results to specified amount
-
+        // execute query
+        const features = new RoomReqSpec(Room.find(), req.query)
+            .filter()
+            .sort()
+            .limitFields()
+            .paginate();
         // returns resolve (after chaining all required methods)
-        const rooms = await query;
+        const rooms = await features.query;
 
+        // send response
         res.status(200).json({
             status: 'success',
             results: rooms.length,
