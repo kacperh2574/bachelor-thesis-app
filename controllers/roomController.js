@@ -1,5 +1,6 @@
 const Room = require('.././models/roomModel');
 const RoomReqSpec = require('../utilities/roomReqSpec');
+const catchAsync = require('../utilities/catchAsync');
 
 exports.aliasTopRated = (req, res, next) => {
     req.query.limit = '5';
@@ -13,106 +14,65 @@ exports.aliasCheapest = (req, res, next) => {
     next();
 };
 
-exports.getAllRooms = async (req, res) => {
-    try {
-        // execute query
-        const features = new RoomReqSpec(Room.find(), req.query)
-            .filter()
-            .sort()
-            .limitFields()
-            .paginate();
-        // returns resolve (after chaining all required methods)
-        const rooms = await features.query;
+exports.getAllRooms = catchAsync(async (req, res, next) => {
+    const features = new RoomReqSpec(Room.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
+    // returns resolve (after chaining all required methods)
+    const rooms = await features.query;
 
-        // send response
-        res.status(200).json({
-            status: 'success',
-            results: rooms.length,
-            data: {
-                rooms,
-            },
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: 'failure',
-            message: err,
-        });
-    }
-};
+    res.status(200).json({
+        status: 'success',
+        results: rooms.length,
+        data: {
+            rooms,
+        },
+    });
+});
 
-exports.getRoom = async (req, res) => {
-    try {
-        const room = await Room.find({ slug: req.params.slug });
+exports.getRoom = catchAsync(async (req, res, next) => {
+    const room = await Room.findById(req.params.id);
 
-        res.status(200).json({
-            status: 'success',
-            data: {
-                room,
-            },
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: 'failure',
-            message: err,
-        });
-    }
-};
+    res.status(200).json({
+        status: 'success',
+        data: {
+            room,
+        },
+    });
+});
 
-exports.createRoom = async (req, res) => {
-    try {
-        const newRoom = await Room.create(req.body);
+exports.createRoom = catchAsync(async (req, res, next) => {
+    const newRoom = await Room.create(req.body);
 
-        res.status(201).json({
-            status: 'success',
-            data: {
-                room: newRoom,
-            },
-        });
-    } catch (err) {
-        res.status(400).json({
-            status: 'failure',
-            message: err,
-        });
-    }
-};
+    res.status(201).json({
+        status: 'success',
+        data: {
+            room: newRoom,
+        },
+    });
+});
 
-exports.updateRoom = async (req, res) => {
-    try {
-        const room = await Room.findOneAndUpdate(
-            { slug: req.params.slug },
-            req.body,
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
+exports.updateRoom = catchAsync(async (req, res, next) => {
+    const room = await Room.findOneAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+    });
 
-        res.status(200).json({
-            status: 'success',
-            data: {
-                room,
-            },
-        });
-    } catch (err) {
-        res.status(400).json({
-            status: 'failure',
-            message: err,
-        });
-    }
-};
+    res.status(200).json({
+        status: 'success',
+        data: {
+            room,
+        },
+    });
+});
 
-exports.deleteRoom = async (req, res) => {
-    try {
-        await Room.findOneAndDelete({ slug: req.params.slug });
+exports.deleteRoom = catchAsync(async (req, res, next) => {
+    await Room.findByIdAndDelete(req.params.id);
 
-        res.status(204).json({
-            status: 'success',
-            data: null,
-        });
-    } catch (err) {
-        res.status(400).json({
-            status: 'failure',
-            message: err,
-        });
-    }
-};
+    res.status(204).json({
+        status: 'success',
+        data: null,
+    });
+});
