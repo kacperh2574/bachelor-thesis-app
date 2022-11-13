@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.4.2",
-  "description": "Added async wrapper to room controller, ID temp. restored",
+  "version": "0.4.3",
+  "description": "Room error handling implemented",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",

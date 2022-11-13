@@ -55,7 +55,7 @@ exports.createRoom = catchAsync(async (req, res, next) => {
 });
 
 exports.updateRoom = catchAsync(async (req, res, next) => {
-    const room = await Room.findOneAndUpdate(req.params.id, req.body, {
+    const room = await Room.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
     });

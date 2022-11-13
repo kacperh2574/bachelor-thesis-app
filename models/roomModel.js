@@ -27,7 +27,7 @@ const roomSchema = new mongoose.Schema({
         required: [true, 'Difficulty required'],
         enum: {
             values: ['easy', 'medium', 'difficult'],
-            message: 'Possible values: easy, medium, difficult',
+            message: 'Possible values - easy, medium, difficult',
         },
     },
     ratingsAvg: {
