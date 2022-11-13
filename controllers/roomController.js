@@ -1,4 +1,4 @@
-const Room = require('.././models/roomModel');
+const Room = require('../models/roomModel');
 const RoomReqSpec = require('../utilities/roomReqSpec');
 const catchAsync = require('../utilities/catchAsync');
 

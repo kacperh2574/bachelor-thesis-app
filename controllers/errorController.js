@@ -1,4 +1,4 @@
-const AppError = require('./../utilities/appError');
+const AppError = require('../utilities/appError');
 
 // requests with invalid ID
 const invalidID = err => {

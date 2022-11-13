@@ -13,10 +13,7 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Email required'],
         unique: true,
         lowercase: true,
-        validate: [
-            validator.isEmail,
-            'Valid email required, i.e. username@domain.com',
-        ],
+        validate: [validator.isEmail, 'Valid email required'],
     },
     photo: {
         type: String,
@@ -25,6 +22,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Password required'],
         minlength: [8, 'Minimum 8 characters'],
+        select: false,
     },
     passwdConfirm: {
         type: String,
@@ -40,11 +38,19 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function (next) {
+    // check if password was modified
     if (!this.isModified('password')) return next();
+    // salt and hash password
     this.password = await bcrypt.hash(this.password, 12);
+    // erase passwdConfirm field
     this.passwdConfirm = undefined;
     next();
 });
+
+userSchema.methods.verifyPassword = async function (userPassword) {
+    // compare send and user password
+    return await bcrypt.compare(userPassword, this.password);
+};
 
 const User = mongoose.model('User', userSchema);
 
