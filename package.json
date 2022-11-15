@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.4.5",
-  "description": "Protected room routes",
+  "version": "0.4.6",
+  "description": "User roles implemented and room deleting restricted",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",
