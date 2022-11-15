@@ -2,14 +2,14 @@ const AppError = require('../utilities/appError');
 
 // requests with invalid ID
 const invalidID = err => {
-    const message = `Invalid room ID: ${err.value}`;
+    const message = `Invalid ID: ${err.value}`;
     return new AppError(message, 400);
 };
 
-// requests with unique room fields already in place
+// requests with unique fields already in place
 const duplicatedFields = err => {
     const value = Object.keys(err.keyValue);
-    const message = `Duplicated room data: ${value}`;
+    const message = `Duplicated field(s): ${value}`;
     return new AppError(message, 400);
 };
 
@@ -18,9 +18,13 @@ const validationError = err => {
     const errors = Object.values(err.errors).map(
         el => `${el.path}: ${el.message}`
     );
-    const message = `Invalid room data. ${errors.join('. ')}`;
+    const message = `Invalid field(s). ${errors.join('. ')}`;
     return new AppError(message, 400);
 };
+
+const jwtError = () => new AppError('Invalid token', 401);
+
+const jwtExpired = () => new AppError('Token expired', 401);
 
 const sendError = (err, res) => {
     // send info about known errors to client
@@ -31,8 +35,6 @@ const sendError = (err, res) => {
         });
     } else {
         // not send info about unknown errors to client
-        console.error('Error', Object.values(err.errors));
-
         res.status(500).json({
             status: 'error',
             message: 'Unknown error',
@@ -43,12 +45,14 @@ const sendError = (err, res) => {
 module.exports = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
-    let error = { ...err };
-
-    if (error.kind === 'ObjectId') error = invalidID(error);
+    let error = { name: err.name, ...err };
+    // console.log(err);
+    if (error.name === 'CastError') error = invalidID(error);
     if (error.code === 11000) error = duplicatedFields(error);
-    if (error._message === 'Validation failed') {
+    if (error.name === 'ValidationError') {
         error = validationError(error);
     }
+    if (error.name === 'JsonWebTokenError') error = jwtError();
+    if (error.name === 'TokenExpiredError') error = jwtExpired();
     sendError(error, res);
 };

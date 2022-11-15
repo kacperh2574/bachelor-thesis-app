@@ -1,5 +1,6 @@
 const express = require('express');
 const roomController = require('../controllers/roomController');
+const authController = require('../controllers/authController');
 const router = express.Router();
 
 router
@@ -12,7 +13,7 @@ router
 
 router
     .route('/')
-    .get(roomController.getAllRooms)
+    .get(authController.protect, roomController.getAllRooms)
     .post(roomController.createRoom);
 
 router

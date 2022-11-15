@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.4.4",
-  "description": "Login and getAllUsers implemented",
+  "version": "0.4.5",
+  "description": "Protected room routes",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",

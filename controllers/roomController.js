@@ -1,6 +1,7 @@
 const Room = require('../models/roomModel');
 const RoomReqSpec = require('../utilities/roomReqSpec');
 const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../utilities/appError');
 
 exports.aliasTopRated = (req, res, next) => {
     req.query.limit = '5';
@@ -35,6 +36,10 @@ exports.getAllRooms = catchAsync(async (req, res, next) => {
 exports.getRoom = catchAsync(async (req, res, next) => {
     const room = await Room.findById(req.params.id);
 
+    if (!room) {
+        return next(new AppError('Room not found', 404));
+    }
+
     res.status(200).json({
         status: 'success',
         data: {
@@ -60,6 +65,10 @@ exports.updateRoom = catchAsync(async (req, res, next) => {
         runValidators: true,
     });
 
+    if (!room) {
+        return next(new AppError('Room not found', 404));
+    }
+
     res.status(200).json({
         status: 'success',
         data: {
@@ -69,7 +78,9 @@ exports.updateRoom = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteRoom = catchAsync(async (req, res, next) => {
-    await Room.findByIdAndDelete(req.params.id);
+    if (!(await Room.findByIdAndDelete(req.params.id))) {
+        return next(new AppError('Room not found', 404));
+    }
 
     res.status(204).json({
         status: 'success',
