@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.4.7",
-  "description": "Email password reset mechanism",
+  "version": "0.4.8",
+  "description": "User data update mechanism",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",

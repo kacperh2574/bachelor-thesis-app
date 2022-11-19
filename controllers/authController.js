@@ -12,6 +12,18 @@ const signToken = id => {
     });
 };
 
+const createAndSendToken = (user, statusCode, res) => {
+    const token = signToken(user._id);
+
+    res.status(statusCode).json({
+        status: 'success',
+        token,
+        data: {
+            user,
+        },
+    });
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
     // create new user basing on send data (excluding isAdmin)
     const newUser = await User.create({
@@ -22,16 +34,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         passwdConfirm: req.body.passwdConfirm,
         passwdChangedAt: req.body.passwdChangedAt,
     });
-    // generate JWT token for user
-    const token = signToken(newUser._id);
-
-    res.status(201).json({
-        status: 'success',
-        token,
-        data: {
-            user: newUser,
-        },
-    });
+    createAndSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -45,17 +48,12 @@ exports.login = catchAsync(async (req, res, next) => {
     if (!user || !(await user.verifyPassword(password))) {
         return next(new AppError('Incorrect email or password', 401));
     }
-    // send token to client
-    const token = signToken(user._id);
-    res.status(200).json({
-        status: 'success',
-        token,
-    });
+    createAndSendToken(user, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
     let token;
-    // check if User is logged in
+    // check if user is logged in
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
@@ -68,7 +66,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
     // check if payload has not been modified (force return of Promise using promisify)
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    // check if User still exists
+    // check if user still exists
     const currentUser = await User.findById(decoded.id);
     if (!currentUser) {
         return next(new AppError('User no longer exists', 401));
@@ -141,7 +139,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
         .digest('hex');
     const user = await User.findOne({
         passwdResetToken: hashedToken,
-        passwdResetExpires: { $gt: Date.now() },
+        passwdResetExpires: { $gt: Date.now() + 60 * 60 * 1000 },
     });
     console.log('PASSWD RESET EXP');
     console.log(user.passwdResetExpires);
@@ -154,10 +152,18 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     user.passwdResetToken = undefined;
     user.passwdResetExpires = undefined;
     await user.save();
-    // login user and send JWT
-    const token = signToken(user._id);
-    res.status(200).json({
-        status: 'success',
-        token,
-    });
+    createAndSendToken(user, 200, res);
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    // check if send password is correct
+    const user = await User.findById(req.user.id).select('+password');
+    if (!(await user.verifyPassword(req.body.passwdCurrent))) {
+        return next(new AppError('Wrong password', 401));
+    }
+    // update password
+    user.password = req.body.password;
+    user.passwdConfirm = req.body.passwdConfirm;
+    await user.save();
+    createAndSendToken(user, 200, res);
 });
