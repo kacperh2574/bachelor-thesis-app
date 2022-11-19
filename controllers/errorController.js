@@ -46,7 +46,6 @@ module.exports = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
     let error = { name: err.name, ...err };
-    console.log(err);
     if (error.name === 'CastError') error = invalidID(error);
     if (error.code === 11000) error = duplicatedFields(error);
     if (error.name === 'ValidationError') {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -41,6 +42,8 @@ const userSchema = new mongoose.Schema({
         },
     },
     passwdChangedAt: Date,
+    passwdResetToken: String,
+    passwdResetExpires: Date,
 });
 
 userSchema.pre('save', async function (next) {
@@ -50,6 +53,13 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
     // erase passwdConfirm field
     this.passwdConfirm = undefined;
+    next();
+});
+
+userSchema.pre('save', function (next) {
+    // check if password is modified to assign new change date
+    if (!this.isModified('password') || this.isNew) return next();
+    this.passwdChangedAt = Date.now();
     next();
 });
 
@@ -67,6 +77,20 @@ userSchema.methods.changedPasswdAfter = function (jwtTimestamp) {
         return jwtTimestamp < changedTimestamp;
     }
     return false;
+};
+
+userSchema.methods.createPassResetToken = function () {
+    // create and hash random reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    this.passwdResetToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+    // 10 minutes (don't know why JS read Date with 1 hour delay)
+    this.passwdResetExpires = Date.now() + 70 * 60 * 1000;
+    console.log(this.passwdResetExpires);
+    // send token in plain text
+    return resetToken;
 };
 
 const User = mongoose.model('User', userSchema);
