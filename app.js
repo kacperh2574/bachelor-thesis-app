@@ -8,6 +8,7 @@ const helmet = require('helmet');
 
 const roomRouter = require('./routes/roomRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 
 const AppError = require('./utilities/appError');
 const errorHandler = require('./controllers/errorController');
@@ -45,6 +46,7 @@ app.use(
 // routes
 app.use('/api/rooms', roomRouter);
 app.use('/api/users', userRouter);
+app.use('/api/reviews', reviewRouter);
 
 // not existing routes handler
 app.all('*', (req, res, next) => {

@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.5.0",
-  "description": "Application secured",
+  "version": "0.5.1",
+  "description": "Reviews implemented",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",

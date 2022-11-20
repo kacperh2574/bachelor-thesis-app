@@ -1,7 +1,10 @@
 const express = require('express');
 const roomController = require('../controllers/roomController');
 const authController = require('../controllers/authController');
+const reviewRouter = require('../routes/reviewRoutes');
 const router = express.Router();
+
+router.use('/:roomId/reviews', reviewRouter);
 
 router
     .route('/top-rated')
@@ -25,5 +28,13 @@ router
         authController.restrictTo('admin', 'manager'),
         roomController.deleteRoom
     );
+
+// router
+//     .route('/:roomId/reviews')
+//     .post(
+//         authController.protect,
+//         authController.restrictTo('user'),
+//         reviewController.createReview
+//     );
 
 module.exports = router;

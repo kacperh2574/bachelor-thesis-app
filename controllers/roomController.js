@@ -34,7 +34,7 @@ exports.getAllRooms = catchAsync(async (req, res, next) => {
 });
 
 exports.getRoom = catchAsync(async (req, res, next) => {
-    const room = await Room.findById(req.params.id);
+    const room = await Room.findById(req.params.id).populate('reviews');
 
     if (!room) {
         return next(new AppError('Room not found', 404));
