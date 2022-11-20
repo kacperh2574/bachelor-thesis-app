@@ -1,5 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+const xssClean = require('xss-clean');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const roomRouter = require('./routes/roomRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -9,15 +14,39 @@ const errorHandler = require('./controllers/errorController');
 
 const app = express();
 
-// middleware
-app.use(morgan('dev')); // request logger (method, status code, elapsed time)
-app.use(express.json()); // parses JSON and returns JS object
+// set security headers
+app.use(helmet());
+
+// limit requests (is it REST?)
+const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many requests from this IP',
+});
+app.use('/api', limiter);
+
+// request logger (method, status code, elapsed time)
+app.use(morgan('dev'));
+
+// JSON body parser
+app.use(express.json({ limit: '10kb' }));
+
+// data sanitization to prevent NoSQL query injection
+app.use(mongoSanitize());
+
+// prevent XSS attacks
+app.use(xssClean());
+
+// prevent HTTP parameter pollution attacks
+app.use(
+    hpp({ whitelist: ['duration', 'maxGroupSize', 'difficulty', 'price'] })
+);
 
 // routes
 app.use('/api/rooms', roomRouter);
 app.use('/api/users', userRouter);
 
-// handle not existing routes
+// not existing routes handler
 app.all('*', (req, res, next) => {
     next(new AppError(`Path ${req.originalUrl} not found`, 404));
 });

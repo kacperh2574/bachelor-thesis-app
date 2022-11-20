@@ -99,7 +99,6 @@ userSchema.methods.createPassResetToken = function () {
         .digest('hex');
     // 10 minutes (don't know why JS read Date with 1 hour delay)
     this.passwdResetExpires = Date.now() + 70 * 60 * 1000;
-    console.log(this.passwdResetExpires);
     // send token in plain text
     return resetToken;
 };

@@ -15,6 +15,17 @@ const signToken = id => {
 const createAndSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
 
+    res.cookie('jwt', token, {
+        expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXP_TIME * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true,
+        secure: false, // TO CHANGE IN PRODUCTION
+    });
+
+    // remove password from output
+    user.password = undefined;
+
     res.status(statusCode).json({
         status: 'success',
         token,
@@ -110,7 +121,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     )}/api/users/resetPassword/${resetToken}`;
     // create message to send
     const message = `Send PATCH request containing new password and its confirmation to: ${resetURL}`;
-    console.log(message);
     // send email
     try {
         await sendEmail({
@@ -141,8 +151,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
         passwdResetToken: hashedToken,
         passwdResetExpires: { $gt: Date.now() + 60 * 60 * 1000 },
     });
-    console.log('PASSWD RESET EXP');
-    console.log(user.passwdResetExpires);
     // if user exists and token is valid - set new password
     if (!user) {
         return next(new AppError('Invalid or expired token', 400));
