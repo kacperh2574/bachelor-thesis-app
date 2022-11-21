@@ -1,4 +1,4 @@
-class RoomReqSpec {
+class ParamsSpec {
     constructor(query, queryStr) {
         this.query = query;
         this.queryStr = queryStr;
@@ -41,4 +41,4 @@ class RoomReqSpec {
     }
 }
 
-module.exports = RoomReqSpec;
+module.exports = ParamsSpec;

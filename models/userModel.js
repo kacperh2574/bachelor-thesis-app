@@ -64,7 +64,7 @@ userSchema.pre('save', async function (next) {
 userSchema.pre('save', function (next) {
     // check if password is modified to assign new change date
     if (!this.isModified('password') || this.isNew) return next();
-    this.passwdChangedAt = Date.now() + 60 * 60 * 1000;
+    this.passwdChangedAt = Date.now();
     next();
 });
 
@@ -98,7 +98,7 @@ userSchema.methods.createPassResetToken = function () {
         .update(resetToken)
         .digest('hex');
     // 10 minutes (don't know why JS read Date with 1 hour delay)
-    this.passwdResetExpires = Date.now() + 70 * 60 * 1000;
+    this.passwdResetExpires = Date.now() + 10 * 60 * 1000;
     // send token in plain text
     return resetToken;
 };

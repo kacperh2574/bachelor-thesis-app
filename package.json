@@ -1,7 +1,7 @@
 {
   "name": "praca-dyplomowa",
-  "version": "0.5.1",
-  "description": "Reviews implemented",
+  "version": "0.5.2",
+  "description": "Refactoring with main controller",
   "main": "app.js",
   "scripts": {
     "test": "nodemon server.js",

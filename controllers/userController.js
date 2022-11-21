@@ -1,6 +1,12 @@
 const User = require('../models/userModel');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/appError');
+const mainController = require('./mainController');
+
+exports.getAllUsers = mainController.getAll(User);
+exports.getUser = mainController.getOne(User);
+exports.updateUser = mainController.updateOne(User); // NOT for password
+exports.deleteUser = mainController.deleteOne(User);
 
 const filterObject = (obj, ...allowedFields) => {
     const newObj = {};
@@ -10,50 +16,17 @@ const filterObject = (obj, ...allowedFields) => {
     return newObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-    const users = await User.find();
-
-    res.status(200).json({
-        status: 'success',
-        results: users.length,
-        data: {
-            users,
-        },
-    });
-});
-
-exports.getUser = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route not yet definied',
-    });
-};
-
 exports.createUser = (req, res) => {
     res.status(500).json({
         status: 'error',
-        message: 'Route not yet definied',
-    });
-};
-
-exports.updateUser = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route not yet definied',
-    });
-};
-
-exports.deleteUser = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'Route not yet definied',
+        message: 'Use /signup instead',
     });
 };
 
 exports.updateMe = catchAsync(async (req, res, next) => {
     // check if user post password to change
     if (req.body.password || req.body.passwdConfirm) {
-        return next(new AppError('Use /updatePassword', 400));
+        return next(new AppError('Use /updatePassword instead', 400));
     }
     // filter out disallowed fields
     const filteredBody = filterObject(req.body, 'name', 'email');
