@@ -16,25 +16,25 @@ router
 
 router
     .route('/')
-    .get(authController.protect, roomController.getAllRooms)
-    .post(roomController.createRoom);
+    .get(roomController.getAllRooms)
+    .post(
+        authController.protect,
+        authController.restrictTo('manager', 'admin'),
+        roomController.createRoom
+    );
 
 router
     .route('/:id')
     .get(roomController.getRoom)
-    .patch(roomController.updateRoom)
+    .patch(
+        authController.protect,
+        authController.restrictTo('manager', 'admin'),
+        roomController.updateRoom
+    )
     .delete(
         authController.protect,
-        authController.restrictTo('admin', 'manager'),
+        authController.restrictTo('admin'),
         roomController.deleteRoom
     );
-
-// router
-//     .route('/:roomId/reviews')
-//     .post(
-//         authController.protect,
-//         authController.restrictTo('user'),
-//         reviewController.createReview
-//     );
 
 module.exports = router;

@@ -36,6 +36,7 @@ const roomSchema = new mongoose.Schema(
             default: 4.5,
             min: [1.0, 'Possible value between 1.0 and 5.0'],
             max: [5.0, 'Possible value between 1.0 and 5.0'],
+            set: val => Math.round(val * 10) / 10,
         },
         ratingsQuantity: {
             type: Number,
