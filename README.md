@@ -1,4 +1,4 @@
-# praca-dyplomowa
-Aplikacja utworzona podczas realizacji kursu "Praca dyplomowa" na studiach 1 stopnia, inżynierskie.
-Stanowi ona serwis służący do przeglądania, rezerwacji, opłacania i oceniania wizyt w tzw. escape roomach.
-Podczas tworzenia aplikacji szczególny nacisk położono na aspekty bezpieczeństwa.
+# bachelor-thesis-app
+The application created during the course "Bachelor's Thesis" on my bachelor degree.
+It provides a service for viewing, booking, paying and evaluating visits to so-called escape rooms.
+During the development of the application, special emphasis was placed on safety aspects.
